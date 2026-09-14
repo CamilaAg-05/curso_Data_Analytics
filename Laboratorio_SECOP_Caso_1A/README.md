@@ -6,7 +6,7 @@
 - Samuel Felipe Bustos Munca 
 
 ## Presentación del Caso 
-**Expediente asignado:** A — * ¿Vale la pena contratar con el Estado?*
+**Expediente asignado:** A — *¿Vale la pena contratar con el Estado?*
 **Recorte asignado:** Vigencia 2024-2025 · Territorio: Distrito Capital de Bogotá
 
 ### Afirmación objeto de verificación

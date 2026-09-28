@@ -36,15 +36,27 @@
 
 ## Preparación de los datos
 
-El recorte final trabajado en el notebook (`secop_recorte.csv`) contiene **39,928 filas y 85 columnas**.
+El recorte final trabajado en el notebook (`secop_recorte.csv`) contiene **50,000 filas y 85 columnas**.
 
 De las 85 columnas disponibles, el análisis se concentró en un subconjunto reducido: `id_contrato`, `nombre_entidad`, `ciudad`, `proveedor_adjudicado`, `documento_proveedor`, `tipo_de_contrato`, `modalidad_de_contratacion`, `valor_del_contrato`, `fecha_de_firma`, `fecha_de_inicio_del_contrato`, `fecha_de_fin_del_contrato`, y dos variables derivadas calculadas en el notebook: `duracion_dias` (fecha de fin menos fecha de inicio) y `valor_mensual_equivalente` (valor del contrato dividido entre la duración aproximada en meses).
 
-##  Qué se analizó en el notebook
+##  Qué se hizo en el notebook 
 
-**Descripción del valor del contrato.** Se calcularon media, mediana y percentiles (25, 75, 90) de `valor_del_contrato`, junto con un histograma de la distribución (vista hasta el percentil 99). 
+**Carga y preparación inicial.** Se cargó el archivo `data/secop_recorte.csv`, que contiene **50,000 filas y 85 columnas**. A partir de las columnas originales se construyeron dos variables nuevas necesarias para el análisis: `duracion_dias` (fecha de fin menos fecha de inicio del contrato) y `valor_mensual_equivalente` (valor del contrato dividido entre la duración aproximada en meses).
 
-**Revisión de calidad de los datos.** Se revisaron faltantes, valores únicos y duplicados en las columnas clave (`id_contrato`, `nombre_entidad`, `ciudad`, `proveedor_adjudicado`, `documento_proveedor`, `valor_del_contrato`, fechas y `duracion_dias`), además de contratos con valor $0
+**Descripción del valor de los contratos.** Se calcularon la media, la mediana y los percentiles de `valor_del_contrato`, junto con un histograma de la distribución. Se encontró que la media ($74.606.090) es casi el doble de la mediana ($33.475.980), lo que indica que unos pocos contratos con valores muy altos (hasta $161.290.800.000) inflan el promedio. Por eso se usa la mediana, y no la media, para describir un contrato típico del recorte.
 
-**Valor, duración y valor mensual equivalente.** Se creó el conjunto de datos `case_data` dejando solo los contratos con valor y duración mayores a cero. Luego, se calcularon las estadísticas de estas tres variables, mostrándolas tanto en notación científica como en números enteros redondeados para facilitar su lectura.
+**Revisión de calidad de los datos.** Se revisaron los faltantes, duplicados y valores atípicos de las columnas principales. Se encontraron: 0 contratos duplicados, 88 contratos con valor $0, 2.804 posibles valores extremos 
+
+**Comprobación** Antes de decidir qué hacer con los ceros o los valores extremos, se comparó la mediana bajo tres tratamientos distintos (con ceros, solo positivos, y positivos sin el 1% superior). La diferencia entre los tres resultó mínima, lo que respaldó la decisión de no eliminar esos casos del análisis principal.
+
+**Valor mensual equivalente** Se calculó el resumen estadístico de `valor_del_contrato`, `duracion_dias` y `valor_mensual_equivalente` juntos, filtrando solo los contratos con valor y duración positivos (49.765 de los 50.000 originales). La mediana del valor mensual equivalente resultó en $5.341.131/mes, mucho más moderada que la media ($12.066.342/mes)
+
+**Exploración adicional del caso más extremo** Se identificaron los contratos en el percentil 99 de valor mensual equivalente y se graficó su duración: la mayoría (cerca de 155 casos) dura entre 0 y 2 meses, lo que explica por qué su valor mensual sale tan alto 
+
+**Patrones de fecha.** Se graficó en qué mes del año inician y se firman los contratos del recorte. En ambos casos se encontró una fuerte concentración en enero y febrero, coherente con el ciclo de renovación de contratos al iniciar el año fiscal.
+
+**Revisión de los contratos en $0.** Se graficó en qué entidades se concentran los 88 contratos con valor $0, para verificar si son un patrón puntual de alguna entidad o casos dispersos.
+
+
 
